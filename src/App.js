@@ -1,26 +1,118 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+//import {createStore} from 'redux';
+import Card from './components/Card';
+//import uuid from 'uuid';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import {Container, AddCardBtn} from './components';
+import uuid from 'uuid';
+
+// const initialState = {
+//   cards: [
+//     { id: 1,
+//       name: 'First card',
+//       tasks: [
+//         {
+//           id: 1,
+//           name: 'This is my first task',
+//           completed: false
+//         },
+//         {
+//           id: 2,
+//           name: 'Second task of my work',
+//           completed: true
+//         }
+//       ]
+//     },
+//     { id: 2,
+//       name: 'Second card',
+//       tasks: [
+//         {
+//           id: 85,
+//           name: 'To buy milk',
+//           completed: true
+//         },
+//         {
+//           id: 63,
+//           name: 'to wash the dishes',
+//           completed: false
+//         }
+//       ]
+//     }
+//   ]
+// }
+
+// function reducer(state = initialState, action){
+//   switch (action.type){
+//     case 'ADD_BOARD': {
+//       console.log('ADD_BOARD');
+//       return state;
+//     }
+//     default: return state;
+//   }
+// }
+// const store = createStore(reducer);
+
+export default class App extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {
+      cards: [
+        { id: 1,
+          name: 'First card',
+          tasks: [
+            {
+              id: 1,
+              name: 'This is my first task',
+              completed: false
+            },
+            {
+              id: 2,
+              name: 'Second task of my work',
+              completed: true
+            }
+          ]
+        },
+        { id: 2,
+          name: 'Second card',
+          tasks: [
+            {
+              id: 85,
+              name: 'To buy milk',
+              completed: true
+            },
+            {
+              id: 63,
+              name: 'to wash the dishes',
+              completed: false
+            }
+          ]
+        }
+      ]
+    }
+    this.addCard = this.addCard.bind(this);
+  }
+  addCard(){
+    this.setState({cards: [...this.state.cards, {id: uuid(), name: 'New Card', tasks: []}]})
+    console.log('add card', this.state);
+  }
+  addTask = (taskName, cardId) => {
+    this.setState({cards: this.state.cards.map((card) => {
+      if(card.id === cardId){
+        return {id: card.id, name: card.name, tasks : [...card.tasks, {id: uuid(), name: taskName, completed: false}]}
+      }else{
+        return card;
+      }
+    })});
+  }
+  render(){
+    return (
+      <Container>
+        {this.state.cards.map(card => <Card key={card.id} card={card} addTask={this.addTask} cardId={card.id}/>)}
+        <AddCardBtn addCard = {this.addCard}/>
+      </Container> 
+    )
+  }
 }
 
-export default App;
+//store.subscribe(()=>console.log(store.getState()));
+//store.dispatch({type: 'ADD_BOARD', playload: 'Hello'});
