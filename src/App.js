@@ -57,31 +57,31 @@ export default class App extends React.Component {
     super(props);
     this.state = {
       cards: [
-        { id: 1,
+        { id: uuid(),
           name: 'First card',
           tasks: [
             {
-              id: 1,
+              id:uuid(),
               name: 'This is my first task',
               completed: false
             },
             {
-              id: 2,
+              id: uuid(),
               name: 'Second task of my work',
               completed: true
             }
           ]
         },
-        { id: 2,
+        { id: uuid(),
           name: 'Second card',
           tasks: [
             {
-              id: 85,
+              id: uuid(),
               name: 'To buy milk',
               completed: true
             },
             {
-              id: 63,
+              id: uuid(),
               name: 'to wash the dishes',
               completed: false
             }
@@ -156,10 +156,28 @@ export default class App extends React.Component {
       }
     );
   }
+
+  onDrop = (data) => {
+    console.log(data);
+    this.setState({
+      cards: this.state.cards.map( card => {
+        if (card.id === data.fromCardId){
+          return {id: card.id, name: card.name, tasks: card.tasks.filter( task => task.id !== data.task.id)}
+        }else if (card.id === data.toCardId){
+          return{
+            id: card.id, name: card.name, tasks: [...card.tasks, data.task]
+          }
+        }else{
+          return card;
+        }
+      })
+    });
+  }
+
   render(){
     return (
       <Container>
-        {this.state.cards.map(card => <Card key={card.id} card={card} addTask={this.addTask} completeTask={this.completeTask} deleteTask={this.deleteTask} deleteCard={this.deleteCard}/>)}
+        {this.state.cards.map(card => <Card key={card.id} card={card} addTask={this.addTask} completeTask={this.completeTask} deleteTask={this.deleteTask} deleteCard={this.deleteCard} onDrop={this.onDrop}/>)}
         <AddCardBtn addCard = {this.addCard}/>
       </Container> 
     )
