@@ -158,13 +158,31 @@ body{
     background-color: #ffda79;
     cursor: pointer;
 }
-.btn-add-card{
+.add-card-box{
+    display: flex;
     -ms-flex-item-align: center;
         -ms-grid-row-align: center;
         align-self: center;
+    flex-flow: column;
     margin-left: 20px;
     margin-top: 20px;
+    background-color: #34ace0;
+    padding: 20px;
 }
+.add-card-btn{
+    padding: 5px;
+    background-color: #33d9b2;
+    border: none;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+.card-name__input{
+    background-color: white;
+    border: none;
+    padding: 5px;
+}
+
 .draged{
     opacity: 0.8;
 }

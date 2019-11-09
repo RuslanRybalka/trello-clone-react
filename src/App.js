@@ -91,8 +91,8 @@ export default class App extends React.Component {
     }
     this.addCard = this.addCard.bind(this);
   }
-  addCard(){
-    this.setState({cards: [...this.state.cards, {id: uuid(), name: 'New Card', tasks: []}]})
+  addCard(cardName){
+    this.setState({cards: [...this.state.cards, {id: uuid(), name: cardName, tasks: []}]})
     console.log('add card', this.state);
   }
   addTask = (taskName, cardId) => {

@@ -7,7 +7,12 @@ export default class InputTaskField extends React.Component{
         this.input = React.createRef();
     }
     addTask(){
-        this.props.addTask(this.input.current.value, this.props.cardId);
+        if(this.input.current.value.trim() == ''){
+            return;
+        }else{
+            this.props.addTask(this.input.current.value, this.props.cardId);
+            this.input.current.value = '';
+        }
     }
     render(){
         return (
