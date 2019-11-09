@@ -1,99 +1,19 @@
 import React from 'react';
-//import {createStore} from 'redux';
 import Card from './components/Card';
-//import uuid from 'uuid';
 
 import {Container, AddCardBtn} from './components';
 import uuid from 'uuid';
 
-// const initialState = {
-//   cards: [
-//     { id: 1,
-//       name: 'First card',
-//       tasks: [
-//         {
-//           id: 1,
-//           name: 'This is my first task',
-//           completed: false
-//         },
-//         {
-//           id: 2,
-//           name: 'Second task of my work',
-//           completed: true
-//         }
-//       ]
-//     },
-//     { id: 2,
-//       name: 'Second card',
-//       tasks: [
-//         {
-//           id: 85,
-//           name: 'To buy milk',
-//           completed: true
-//         },
-//         {
-//           id: 63,
-//           name: 'to wash the dishes',
-//           completed: false
-//         }
-//       ]
-//     }
-//   ]
-// }
-
-// function reducer(state = initialState, action){
-//   switch (action.type){
-//     case 'ADD_BOARD': {
-//       console.log('ADD_BOARD');
-//       return state;
-//     }
-//     default: return state;
-//   }
-// }
-// const store = createStore(reducer);
-
 export default class App extends React.Component {
   constructor(props){
     super(props);
-    this.state = {
-      cards: [
-        { id: uuid(),
-          name: 'First card',
-          tasks: [
-            {
-              id:uuid(),
-              name: 'This is my first task',
-              completed: false
-            },
-            {
-              id: uuid(),
-              name: 'Second task of my work',
-              completed: true
-            }
-          ]
-        },
-        { id: uuid(),
-          name: 'Second card',
-          tasks: [
-            {
-              id: uuid(),
-              name: 'To buy milk',
-              completed: true
-            },
-            {
-              id: uuid(),
-              name: 'to wash the dishes',
-              completed: false
-            }
-          ]
-        }
-      ]
-    }
+     this.state = window.localStorage.getItem('board') ? JSON.parse(window.localStorage.getItem('board')) : {cards: []};
     this.addCard = this.addCard.bind(this);
   }
   addCard(cardName){
     this.setState({cards: [...this.state.cards, {id: uuid(), name: cardName, tasks: []}]})
     console.log('add card', this.state);
+    window.localStorage.setItem('board', JSON.stringify(this.state));
   }
   addTask = (taskName, cardId) => {
     this.setState({cards: this.state.cards.map((card) => {
@@ -103,6 +23,8 @@ export default class App extends React.Component {
         return card;
       }
     })});
+
+    setTimeout(() => window.localStorage.setItem('board', JSON.stringify(this.state)));
   }
   completeTask = (taskId, cardId) => {
     this.setState(
@@ -126,6 +48,7 @@ export default class App extends React.Component {
         })
       }
     )
+    setTimeout(() => window.localStorage.setItem('board', JSON.stringify(this.state)));
   }
   deleteTask = (taskId, cardId) => {
     console.log('delete task', cardId, taskId);
@@ -146,6 +69,7 @@ export default class App extends React.Component {
         })
       }
     )
+    setTimeout(() => window.localStorage.setItem('board', JSON.stringify(this.state)));
   }
   deleteCard = (cardId) => {
     this.setState(
@@ -155,6 +79,7 @@ export default class App extends React.Component {
         })
       }
     );
+    setTimeout(() => window.localStorage.setItem('board', JSON.stringify(this.state)));
   }
 
   onDrop = (data) => {
@@ -172,6 +97,7 @@ export default class App extends React.Component {
         }
       })
     });
+    setTimeout(()=> window.localStorage.setItem('board', JSON.stringify(this.state)), 50);
   }
 
   render(){
@@ -183,6 +109,3 @@ export default class App extends React.Component {
     )
   }
 }
-
-//store.subscribe(()=>console.log(store.getState()));
-//store.dispatch({type: 'ADD_BOARD', playload: 'Hello'});

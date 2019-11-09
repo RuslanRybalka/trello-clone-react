@@ -4,9 +4,6 @@ import CompleteTaskBtn from './CompleteTaskBtn';
 
 export default class Task extends React.Component {
 
-    constructor(props){
-        super(props);
-    }
     dragStart = (event) => {
         let data = JSON.stringify({fromCardId: this.props.cardId, task: {id: this.props.taskId, name: this.props.task.name, completed: this.props.task.completed}});
         event.dataTransfer.setData('text', data);

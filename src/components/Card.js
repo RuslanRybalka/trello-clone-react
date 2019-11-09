@@ -2,9 +2,7 @@ import React from 'react';
 import {CardTitle, InputTaskField, TasksList, DeleteCardBtn} from './CardComponents';
 
 export default class Card extends React.Component {
-    constructor(props){
-        super(props);
-    }
+    
     dragOver = event => {
         event.preventDefault();
     }
