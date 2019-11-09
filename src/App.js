@@ -104,10 +104,62 @@ export default class App extends React.Component {
       }
     })});
   }
+  completeTask = (taskId, cardId) => {
+    this.setState(
+      {
+        cards: this.state.cards.map( card => {
+          if (card.id !== cardId){
+            return card;
+          } else{
+            return {
+              id: card.id,
+              name: card.name,
+              tasks: card.tasks.map( task => {
+                if(task.id === taskId){
+                  return {id: task.id, name: task.name, completed: !task.completed}
+                } else{
+                  return task;
+                }
+              })
+            }            
+          }
+        })
+      }
+    )
+  }
+  deleteTask = (taskId, cardId) => {
+    console.log('delete task', cardId, taskId);
+    this.setState(
+      {
+        cards: this.state.cards.map( card => {
+          if (card.id !== cardId){
+            return card;
+          } else{
+            return {
+              id: card.id,
+              name: card.name,
+              tasks: card.tasks.filter( task => {
+                return task.id !== taskId    
+              })
+            }            
+          }
+        })
+      }
+    )
+  }
+  deleteCard = (cardId) => {
+    this.setState(
+      {
+        cards: this.state.cards.filter( card => {
+          return card.id!== cardId;
+        })
+      }
+    );
+  }
   render(){
     return (
       <Container>
-        {this.state.cards.map(card => <Card key={card.id} card={card} addTask={this.addTask} cardId={card.id}/>)}
+        {this.state.cards.map(card => <Card key={card.id} card={card} addTask={this.addTask} completeTask={this.completeTask} deleteTask={this.deleteTask} deleteCard={this.deleteCard}/>)}
         <AddCardBtn addCard = {this.addCard}/>
       </Container> 
     )
